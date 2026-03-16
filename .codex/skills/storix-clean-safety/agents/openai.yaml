@@ -1,0 +1,7 @@
+interface:
+  display_name: "Storix Clean Safety"
+  short_description: "Protect scan and cleanup flows with risk and guard rules"
+  default_prompt: "Use $storix-clean-safety to implement or review Storix cleanup logic safely."
+
+policy:
+  allow_implicit_invocation: true

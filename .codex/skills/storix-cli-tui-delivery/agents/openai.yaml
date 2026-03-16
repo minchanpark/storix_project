@@ -1,0 +1,7 @@
+interface:
+  display_name: "Storix CLI and TUI Delivery"
+  short_description: "Build Storix commands, output, and Textual UI cleanly"
+  default_prompt: "Use $storix-cli-tui-delivery to build or refine Storix CLI, presenters, reports, or TUI."
+
+policy:
+  allow_implicit_invocation: true

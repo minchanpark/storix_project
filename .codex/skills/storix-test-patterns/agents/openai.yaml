@@ -1,0 +1,7 @@
+interface:
+  display_name: "Storix Test Patterns"
+  short_description: "Add safe, repeatable pytest coverage for Storix flows"
+  default_prompt: "Use $storix-test-patterns to add or review Storix tests and regression coverage."
+
+policy:
+  allow_implicit_invocation: true

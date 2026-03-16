@@ -1,0 +1,7 @@
+interface:
+  display_name: "Storix MVP Guardrails"
+  short_description: "Keep Storix work aligned with PRD/TDD and MVP scope"
+  default_prompt: "Use $storix-mvp-guardrails to scope or review a Storix change against the PRD and TDD."
+
+policy:
+  allow_implicit_invocation: true
