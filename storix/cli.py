@@ -10,6 +10,7 @@ from rich.console import Console
 
 from storix import __version__
 
+# 패키지 실행과 직접 파일 실행 모두에서 임포트 문제가 발생하지 않도록 CLI 앱을 동적으로 로드합니다.
 app = typer.Typer(
     name="storix",
     help="macOS storage analyzer and cleaner for developers.",
@@ -28,13 +29,16 @@ def version_callback(value: bool) -> None:
         raise typer.Exit()
 
 
-@app.callback()
+@app.callback(invoke_without_command=True)
 def main(
+    ctx: typer.Context,
     version: Optional[bool] = typer.Option(
         None, "--version", "-v", callback=version_callback, is_eager=True, help="Show version."
     ),
 ) -> None:
-    pass
+    if ctx.invoked_subcommand is None:
+        console.print(ctx.get_help(), end="")
+        raise typer.Exit(0)
 
 
 # ─── scan ─────────────────────────────────────────────────────────────────────
@@ -143,6 +147,13 @@ def doctor(
 
 clean_app = typer.Typer(help="Clean storage by category or risk level.")
 app.add_typer(clean_app, name="clean")
+
+
+@clean_app.callback(invoke_without_command=True)
+def clean_main(ctx: typer.Context) -> None:
+    if ctx.invoked_subcommand is None:
+        console.print(ctx.get_help(), end="")
+        raise typer.Exit(0)
 
 
 @clean_app.command("all-safe")
@@ -271,6 +282,12 @@ def _run_category_clean(
 
 
 # ─── projects scan ────────────────────────────────────────────────────────────
+
+@projects_app.callback(invoke_without_command=True)
+def projects_main(ctx: typer.Context) -> None:
+    if ctx.invoked_subcommand is None:
+        console.print(ctx.get_help(), end="")
+        raise typer.Exit(0)
 
 @projects_app.command("scan")
 def projects_scan(
