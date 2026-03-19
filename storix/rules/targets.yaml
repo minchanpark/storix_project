@@ -1,0 +1,308 @@
+# Storix known path rules
+# Each entry defines a cleanup target with path, category, risk, reason, etc.
+
+targets:
+  # ─── Xcode ────────────────────────────────────────────────────────────────
+  - id: xcode_derived_data
+    name: "Xcode DerivedData"
+    category: xcode
+    risk: safe
+    path: "~/Library/Developer/Xcode/DerivedData"
+    reason: "Build artifacts regenerated on next build"
+    regenerable: true
+    description: "Xcode build intermediates and products. Safe to delete; Xcode will rebuild on next build."
+    warning: ""
+
+  - id: xcode_archives
+    name: "Xcode Archives"
+    category: xcode
+    risk: caution
+    path: "~/Library/Developer/Xcode/Archives"
+    reason: "App archives; may be needed to re-submit or symbolicate crash logs"
+    regenerable: true
+    description: "Xcode app archives. Can be recreated but you will lose the ability to symbolicate old crash reports."
+    warning: "Deleting archives removes the ability to re-submit to App Store or symbolicate crash logs from released builds."
+
+  - id: xcode_ios_device_support
+    name: "iOS DeviceSupport"
+    category: xcode
+    risk: caution
+    path: "~/Library/Developer/Xcode/iOS DeviceSupport"
+    reason: "Device debugging symbols; re-downloaded when device reconnects"
+    regenerable: true
+    description: "Per-iOS-version debugging support files. Re-downloaded automatically when device is connected."
+    warning: "Remove only versions you no longer test against."
+
+  - id: xcode_watchos_device_support
+    name: "watchOS DeviceSupport"
+    category: xcode
+    risk: caution
+    path: "~/Library/Developer/Xcode/watchOS DeviceSupport"
+    reason: "watchOS device debugging symbols"
+    regenerable: true
+    description: "Per-watchOS-version debugging support files."
+    warning: "Remove only versions you no longer test against."
+
+  - id: xcode_tvos_device_support
+    name: "tvOS DeviceSupport"
+    category: xcode
+    risk: caution
+    path: "~/Library/Developer/Xcode/tvOS DeviceSupport"
+    reason: "tvOS device debugging symbols"
+    regenerable: true
+    description: "Per-tvOS-version debugging support files."
+    warning: "Remove only versions you no longer test against."
+
+  - id: xcode_simulator_devices
+    name: "Simulator Devices"
+    category: xcode
+    risk: caution
+    path: "~/Library/Developer/CoreSimulator/Devices"
+    reason: "iOS/watchOS simulator data; can be recreated via Xcode"
+    regenerable: true
+    description: "Simulator runtime data. Can be pruned with `xcrun simctl delete unavailable`."
+    warning: "Deleting removes all simulator app data. Use 'xcrun simctl delete unavailable' for safer cleanup."
+
+  - id: cocoapods_cache
+    name: "CocoaPods Cache"
+    category: xcode
+    risk: caution
+    path: "~/Library/Caches/CocoaPods"
+    reason: "Cached CocoaPods downloads; re-downloaded on next pod install"
+    regenerable: true
+    description: "CocoaPods download cache. Will be re-fetched on next `pod install`."
+    warning: ""
+
+  # ─── Android ──────────────────────────────────────────────────────────────
+  - id: android_avd
+    name: "Android AVD"
+    category: android
+    risk: caution
+    path: "~/.android/avd"
+    reason: "Android virtual devices; can be recreated in AVD Manager"
+    regenerable: true
+    description: "Android emulator device definitions and data. Recreatable via Android Studio AVD Manager."
+    warning: "Deleting removes all emulator app data and configurations."
+
+  - id: gradle_caches
+    name: "Gradle Caches"
+    category: android
+    risk: caution
+    path: "~/.gradle/caches"
+    reason: "Gradle build caches; re-downloaded on next build"
+    regenerable: true
+    description: "Gradle dependency and build caches. Re-downloaded on next build."
+    warning: ""
+
+  - id: android_sdk_system_images
+    name: "Android SDK System Images"
+    category: android
+    risk: caution
+    path: "~/Library/Android/sdk/system-images"
+    reason: "Android emulator system images; re-downloadable via SDK Manager"
+    regenerable: true
+    description: "Android emulator system images. Very large; re-downloadable via SDK Manager."
+    warning: "Deleting requires re-downloading to use those API levels in the emulator."
+
+  # ─── Flutter / Dart ───────────────────────────────────────────────────────
+  - id: pub_cache
+    name: "Dart/Flutter Pub Cache"
+    category: flutter
+    risk: caution
+    path: "~/.pub-cache"
+    reason: "Dart package cache; re-downloaded on next pub get/flutter pub get"
+    regenerable: true
+    description: "Cached Dart packages. Re-fetched automatically on next `flutter pub get`."
+    warning: ""
+
+  # ─── Node / Web ───────────────────────────────────────────────────────────
+  - id: npm_cache
+    name: "npm Cache"
+    category: node
+    risk: safe
+    path: "~/.npm"
+    reason: "npm package cache; automatically managed"
+    regenerable: true
+    description: "npm download cache. Safe to clear; npm will re-fetch packages as needed."
+    warning: ""
+
+  - id: yarn_cache
+    name: "Yarn Cache"
+    category: node
+    risk: safe
+    path: "~/Library/Caches/yarn"
+    reason: "Yarn package cache"
+    regenerable: true
+    description: "Yarn download cache."
+    warning: ""
+
+  - id: pnpm_store
+    name: "pnpm Store"
+    category: node
+    risk: caution
+    path: "~/Library/pnpm/store"
+    reason: "pnpm content-addressable store; shared across projects"
+    regenerable: true
+    description: "pnpm global content-addressable store. Deleting may break existing pnpm-linked projects."
+    warning: "Shared across all pnpm projects. Run `pnpm store prune` for safer cleanup."
+
+  - id: bun_cache
+    name: "Bun Cache"
+    category: node
+    risk: safe
+    path: "~/.bun/install/cache"
+    reason: "Bun package cache"
+    regenerable: true
+    description: "Bun package download cache."
+    warning: ""
+
+  # ─── Python ───────────────────────────────────────────────────────────────
+  - id: pip_cache
+    name: "pip Cache"
+    category: python
+    risk: safe
+    path: "~/Library/Caches/pip"
+    reason: "pip wheel and package cache"
+    regenerable: true
+    description: "pip download and wheel cache. Safe to clear."
+    warning: ""
+
+  - id: uv_cache
+    name: "uv Cache"
+    category: python
+    risk: safe
+    path: "~/.cache/uv"
+    reason: "uv package manager cache"
+    regenerable: true
+    description: "uv package manager download cache."
+    warning: ""
+
+  - id: poetry_cache
+    name: "Poetry Cache"
+    category: python
+    risk: caution
+    path: "~/Library/Caches/pypoetry"
+    reason: "Poetry virtual environments and download cache"
+    regenerable: true
+    description: "Poetry package and virtualenv cache."
+    warning: ""
+
+  # ─── VS Code ──────────────────────────────────────────────────────────────
+  - id: vscode_cache
+    name: "VS Code Cache"
+    category: vscode
+    risk: safe
+    path: "~/Library/Application Support/Code/Cache"
+    reason: "VS Code UI cache; recreated automatically"
+    regenerable: true
+    description: "VS Code Electron cache."
+    warning: ""
+
+  - id: vscode_cached_data
+    name: "VS Code CachedData"
+    category: vscode
+    risk: safe
+    path: "~/Library/Application Support/Code/CachedData"
+    reason: "VS Code compiled extension data; recreated"
+    regenerable: true
+    description: "Compiled VS Code extension data. Recreated on next launch."
+    warning: ""
+
+  - id: vscode_workspace_storage
+    name: "VS Code Workspace Storage"
+    category: vscode
+    risk: safe
+    path: "~/Library/Application Support/Code/User/workspaceStorage"
+    reason: "Per-workspace extension data; safely removable for old workspaces"
+    regenerable: true
+    description: "Per-workspace state stored by extensions. Old/unused workspace entries can be safely removed."
+    warning: ""
+
+  - id: vscode_logs
+    name: "VS Code Logs"
+    category: vscode
+    risk: safe
+    path: "~/Library/Application Support/Code/logs"
+    reason: "VS Code log files"
+    regenerable: true
+    description: "VS Code diagnostic log files."
+    warning: ""
+
+# Project-level artifact patterns (used by project scanner)
+project_artifacts:
+  flutter:
+    markers:
+      - pubspec.yaml
+    artifacts:
+      - path: build
+        risk: safe
+        reason: "Flutter build output"
+      - path: .dart_tool
+        risk: safe
+        reason: "Dart tool cache"
+      - path: ios/Pods
+        risk: caution
+        reason: "CocoaPods dependencies; run pod install to restore"
+
+  node:
+    markers:
+      - package.json
+    artifacts:
+      - path: node_modules
+        risk: caution
+        reason: "npm/yarn dependencies; run npm install to restore"
+      - path: .next
+        risk: safe
+        reason: "Next.js build output"
+      - path: dist
+        risk: safe
+        reason: "Build output"
+      - path: build
+        risk: safe
+        reason: "Build output"
+      - path: .cache
+        risk: safe
+        reason: "Build cache"
+      - path: coverage
+        risk: safe
+        reason: "Test coverage output"
+
+  python:
+    markers:
+      - pyproject.toml
+      - setup.py
+      - setup.cfg
+    artifacts:
+      - path: __pycache__
+        risk: safe
+        reason: "Python bytecode cache"
+      - path: .pytest_cache
+        risk: safe
+        reason: "pytest cache"
+      - path: dist
+        risk: safe
+        reason: "Python distribution build"
+      - path: build
+        risk: safe
+        reason: "Build output"
+      - path: "*.egg-info"
+        risk: safe
+        reason: "Python egg metadata"
+      - path: .venv
+        risk: caution
+        reason: "Virtual environment; recreatable with pip install"
+      - path: venv
+        risk: caution
+        reason: "Virtual environment; recreatable with pip install"
+
+  android:
+    markers:
+      - build.gradle
+      - build.gradle.kts
+    artifacts:
+      - path: build
+        risk: safe
+        reason: "Android build output"
+      - path: .gradle
+        risk: safe
+        reason: "Gradle build cache"

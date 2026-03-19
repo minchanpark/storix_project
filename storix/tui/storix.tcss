@@ -1,0 +1,80 @@
+/* Storix TUI stylesheet */
+
+Screen {
+    background: $surface;
+}
+
+Header {
+    background: $primary;
+    color: $text;
+    height: 1;
+}
+
+Horizontal {
+    height: 1fr;
+}
+
+CategoryList {
+    width: 22;
+    height: 100%;
+    border-right: solid $primary-darken-1;
+    background: $surface-darken-1;
+}
+
+CategoryList > ListItem {
+    padding: 0 1;
+    color: $text-muted;
+}
+
+CategoryList > ListItem.--highlight {
+    background: $primary;
+    color: $text;
+}
+
+CategoryList > ListItem:hover {
+    background: $primary-lighten-1;
+    color: $text;
+}
+
+CandidateTable {
+    height: 100%;
+    border: none;
+}
+
+DetailPanel {
+    width: 34;
+    height: 100%;
+    border-left: solid $primary-darken-1;
+    padding: 1;
+    overflow-y: auto;
+    background: $surface-darken-1;
+    color: $text-muted;
+}
+
+SummaryBar {
+    height: 1;
+    background: $primary-darken-2;
+    color: $text;
+    padding: 0 1;
+    dock: bottom;
+}
+
+Footer {
+    background: $primary-darken-3;
+    color: $text-muted;
+    height: 1;
+}
+
+Button {
+    margin: 0 1;
+}
+
+Button.-primary {
+    background: $primary;
+    color: $text;
+}
+
+Button.-error {
+    background: $error;
+    color: $text;
+}
