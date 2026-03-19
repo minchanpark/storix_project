@@ -3,9 +3,13 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "storix"
+name = "storix-cli"
 version = "0.1.0"
 description = "macOS local storage analyzer and cleaner for developers"
+readme = "README.md"
+authors = [
+    { name = "Minchan Park" },
+]
 
 requires-python = ">=3.11"
 license = { text = "MIT" }
@@ -41,10 +45,16 @@ dev = [
 storix = "storix.cli:app"
 
 [project.urls]
-Repository = "https://github.com/storix/storix"
+Homepage = "https://github.com/minchanpark/storix_project"
+Repository = "https://github.com/minchanpark/storix_project"
+Issues = "https://github.com/minchanpark/storix_project/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["storix"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"storix/tui/storix.tcss" = "storix/tui/storix.tcss"
+"storix/rules/targets.yaml" = "storix/rules/targets.yaml"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
