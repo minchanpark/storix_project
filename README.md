@@ -31,21 +31,22 @@ Storix ships as a CLI and TUI, with shared service logic behind both interfaces.
 
 ## Install
 
-### From PyPI with `pipx`
+Storix targets macOS and requires Python 3.11 or newer.
+
+The recommended install method is `pipx`, because it keeps the CLI isolated while still exposing the `storix` command globally.
+
+If you do not already have `pipx`, install it first:
 
 ```bash
-pipx install storix-cli
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
 ```
 
-After install, the command is still:
-
-```bash
-storix --help
-```
+Then choose one of the install paths below.
 
 ### From GitHub with `pipx`
 
-This is the most practical way to share the CLI before a public PyPI package name is finalized.
+This is the simplest end-user install path today.
 
 ```bash
 pipx install "git+https://github.com/minchanpark/storix_project.git"
@@ -57,12 +58,30 @@ After install, the command is still:
 storix --help
 ```
 
-### Local Development Install
+### From a Local Clone with `pipx`
 
 ```bash
-python -m pip install -e ".[dev]"
+git clone https://github.com/minchanpark/storix_project.git
+cd storix_project
+pipx install .
 storix --help
 ```
+
+### Alternative: Install in a Virtual Environment
+
+If you prefer not to use `pipx`, install Storix in a dedicated virtual environment:
+
+```bash
+git clone https://github.com/minchanpark/storix_project.git
+cd storix_project
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install .
+storix --help
+```
+
+See [`docs/install.md`](docs/install.md) for a full install guide, including upgrade and uninstall commands.
 
 ## Quick Start
 
@@ -107,7 +126,7 @@ python -m pytest
 
 ## Packaging Notes
 
-- The PyPI package name is `storix-cli`
+- The package distribution name is `storix-cli`
 - The installed CLI command is `storix`
 - The package currently targets Python 3.11+
 - The project is designed for macOS workflows
