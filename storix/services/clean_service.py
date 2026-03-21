@@ -9,13 +9,21 @@ from storix.cleaners.base import clean_candidates
 from storix.services.scan_service import run_scan
 
 
-def clean_all_safe(dry_run: bool = False) -> CleanReport:
-    """Clean all safe candidates across all categories."""
+def clean_all_safe(dry_run: bool = False, allow_caution: bool = False) -> CleanReport:
+    """Clean all safe candidates, and optionally caution candidates, across all categories."""
     summary = run_scan()
-    safe_candidates = [
-        c for c in summary.all_candidates if c.risk == RiskLevel.SAFE
+    eligible_risks = {RiskLevel.SAFE}
+    if allow_caution:
+        eligible_risks.add(RiskLevel.CAUTION)
+
+    eligible_candidates = [
+        c for c in summary.all_candidates if c.risk in eligible_risks
     ]
-    return clean_candidates(safe_candidates, dry_run=dry_run, allow_caution=False)
+    return clean_candidates(
+        eligible_candidates,
+        dry_run=dry_run,
+        allow_caution=allow_caution,
+    )
 
 
 def clean_by_category(

@@ -6,7 +6,9 @@ from unittest.mock import patch
 
 from storix.models.candidate import Candidate
 from storix.models.enums import Category, RiskLevel, CleanStatus
+from storix.models.summary import DiskSummary, CategorySummary, ScanSummary
 from storix.cleaners.base import clean_candidates
+from storix.services.clean_service import clean_all_safe
 
 
 def make_candidate(
@@ -140,3 +142,38 @@ def test_clean_report_summary(tmp_path):
     assert len(report.succeeded) == 2
     assert len(report.skipped) == 1
     assert report.total_reclaimed_bytes > 0
+
+
+def test_clean_all_safe_excludes_caution_by_default(tmp_path):
+    safe = make_candidate(tmp_path, "safe_default", RiskLevel.SAFE)
+    caution = make_candidate(tmp_path, "caution_default", RiskLevel.CAUTION)
+
+    summary = ScanSummary(
+        disk=DiskSummary(total_bytes=1, used_bytes=1, free_bytes=0),
+        categories=[CategorySummary(category=Category.XCODE, candidates=[safe, caution])],
+    )
+
+    with patch("storix.services.clean_service.run_scan", return_value=summary):
+        report = clean_all_safe(dry_run=True)
+
+    assert len(report.dry_run_items) == 1
+    assert report.dry_run_items[0].candidate.name == "safe_default"
+    assert len(report.skipped) == 0
+    assert caution.path.exists()
+
+
+def test_clean_all_safe_includes_caution_when_allowed(tmp_path):
+    safe = make_candidate(tmp_path, "safe_with_caution", RiskLevel.SAFE)
+    caution = make_candidate(tmp_path, "caution_with_caution", RiskLevel.CAUTION)
+
+    summary = ScanSummary(
+        disk=DiskSummary(total_bytes=1, used_bytes=1, free_bytes=0),
+        categories=[CategorySummary(category=Category.XCODE, candidates=[safe, caution])],
+    )
+
+    with patch("storix.services.clean_service.run_scan", return_value=summary):
+        report = clean_all_safe(dry_run=True, allow_caution=True)
+
+    dry_run_names = {item.candidate.name for item in report.dry_run_items}
+    assert dry_run_names == {"safe_with_caution", "caution_with_caution"}
+    assert len(report.skipped) == 0

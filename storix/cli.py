@@ -160,21 +160,23 @@ def clean_main(ctx: typer.Context) -> None:
 def clean_all_safe(
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview without deleting."),
     yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation."),
+    caution: bool = typer.Option(False, "--caution", help="Include caution items."),
     json_output: bool = typer.Option(False, "--json", help="Output as JSON."),
 ) -> None:
-    """Clean all safe candidates across all categories."""
+    """Clean all safe candidates across all categories, with optional caution items."""
     from storix.services.clean_service import clean_all_safe as _clean_all_safe
     from storix.presenters.console_presenter import print_clean_report
     from storix.presenters.json_presenter import clean_to_json
     from storix.utils.confirm import confirm
 
     if not dry_run and not yes:
-        if not confirm("Clean all safe items?", default=False):
+        prompt = "Clean all safe + caution items?" if caution else "Clean all safe items?"
+        if not confirm(prompt, default=False):
             console.print("[yellow]Aborted.[/yellow]")
             raise typer.Exit(0)
 
     with console.status("[bold green]Cleaning..."):
-        report = _clean_all_safe(dry_run=dry_run)
+        report = _clean_all_safe(dry_run=dry_run, allow_caution=caution)
 
     if json_output:
         console.print(clean_to_json(report))

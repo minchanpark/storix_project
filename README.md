@@ -71,6 +71,7 @@ storix scan
 storix doctor
 storix top
 storix clean all-safe --dry-run
+storix clean all-safe --caution --dry-run
 storix clean all-safe --yes
 storix tui
 ```
@@ -89,6 +90,7 @@ Storix always supports dry-run flows and routes deletion through shared guard ch
 storix scan --json
 storix doctor --markdown
 storix clean xcode --dry-run
+storix clean all-safe --caution --yes
 storix clean python --yes
 storix projects scan ~/work/myapp ~/work/another-app
 ```

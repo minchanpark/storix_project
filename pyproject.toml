@@ -52,10 +52,6 @@ Issues = "https://github.com/minchanpark/storix_project/issues"
 [tool.hatch.build.targets.wheel]
 packages = ["storix"]
 
-[tool.hatch.build.targets.wheel.force-include]
-"storix/tui/storix.tcss" = "storix/tui/storix.tcss"
-"storix/rules/targets.yaml" = "storix/rules/targets.yaml"
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
